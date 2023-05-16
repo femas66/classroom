@@ -11,6 +11,23 @@ use Illuminate\Support\Str;
 
 class KelasController extends Controller
 {
+    function gabungUrl($kode_kelas) {
+        $cari = Kelas::where('kode_kelas', $kode_kelas);
+        if ($cari->count() == 0) {
+            return redirect()->route('home')->with('error', 'Kelas tidak ditemukan');
+        } else {
+            $kelas_id = $cari->first()->id;
+            $gabung = UserRole::where('user_id', Auth::user()->id)->where('kelas_id', $kelas_id)->count();
+            // dd($gabung);
+            if ($gabung > 0) {
+                return redirect()->route('home')->with('error', 'Anda sudah bergabung');
+            }
+            else {
+                UserRole::create(['kelas_id' => $kelas_id, 'user_id' => Auth::user()->id, 'role' => 'member']);
+                return redirect()->route('home')->with('success', 'Berhasil bergabung ke kelas');
+            }
+        }
+    }
     function guru(Request $request) {
         // dd($request->all());
         $user_id = $request->user_id;
@@ -69,15 +86,17 @@ class KelasController extends Controller
             }
         }
     }
-    function show($id) {
+    function show(Request $request,$id) {
         $info_kelas = Kelas::find($id);
         $role = UserRole::where('kelas_id', $id)->where('user_id', Auth::user()->id)->first();
         if ($role == null) {
             return redirect()->route('home');
         }
         $materis = Materi::where('kelas_id', $id)->get();
+        $domain = $request->getHost() . ':'. $request->getPort() . '/gabung/kode/' . $info_kelas->kode_kelas;
+        // dd($domain);
         // dd($kelas);
-        return view('kelas.index', compact('info_kelas', 'role', 'materis'));
+        return view('kelas.index', compact('info_kelas', 'role', 'materis', 'domain'));
     }
     function edit($id) {
         $role = UserRole::where('kelas_id', $id)->where('user_id', Auth::user()->id)->first();

@@ -45,6 +45,7 @@ Route::middleware('auth.check')->group(function () {
         Route::get('/create', [KelasController::class, 'create'])->name('kelas.create');
         Route::post('/', [KelasController::class, 'store'])->name('kelas.store');
         Route::get('/gabung', [KelasController::class, 'gabungView'])->name('kelas.gabung.index');
+        Route::get('/gabung/kode/{kode_kelas}', [KelasController::class, 'gabungUrl'])->name('kelas.gabung.url');
         Route::post('/gabung', [KelasController::class, 'gabungStore'])->name('kelas.gabung.store');
         Route::get('/{id}', [KelasController::class, 'show'])->name('kelas.show');
         Route::get('/edit/{id}', [KelasController::class, 'edit'])->name('kelas.edit');
