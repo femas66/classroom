@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('materi_komentars', function (Blueprint $table) {
             $table->id();
             $table->foreignId('materi_id')->constrained('materis')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('user_id')->constrained('user_roles', 'user_id')->onDelete('cascade')->onUpdate('cascade');
             $table->string('komentar');
             $table->timestamps();
         });

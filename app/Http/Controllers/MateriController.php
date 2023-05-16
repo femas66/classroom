@@ -66,7 +66,7 @@ class MateriController extends Controller
         $validatedData = $request->validate([
             'materi_id' => 'required',
             'user_id' => 'required',
-            'komentar' => 'required|min:5',
+            'komentar' => 'required|min:2',
         ]);
         MateriKomentar::create($validatedData);
         return back()->with('success', 'Berhasil mengirim komentar');

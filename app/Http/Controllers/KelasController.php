@@ -11,13 +11,27 @@ use Illuminate\Support\Str;
 
 class KelasController extends Controller
 {
+    function guru(Request $request) {
+        // dd($request->all());
+        $user_id = $request->user_id;
+        $kelas_id = $request->kelas_id;
+        UserRole::where('user_id', $user_id)->where('kelas_id', $kelas_id)->update(['role' => 'guru']);
+        return back()->with('success', 'Berhasil menjadikan guru');
+    }
+
+    function member(Request $request) {
+        $user_id = $request->user_id;
+        $kelas_id = $request->kelas_id;
+        UserRole::where('user_id', $user_id)->where('kelas_id', $kelas_id)->update(['role' => 'member']);
+        return back()->with('success', 'Berhasil menjadikan member');
+    }
     function create() {
         return view('kelas.buatkelas');
     }
     function listAnggota($id) {
         $lists = UserRole::where('kelas_id', $id)->get();
         $role = UserRole::where('kelas_id', $id)->where('user_id', Auth::user()->id)->first()->role;
-        return view('kelas.listanggota', compact('lists', 'role'));
+        return view('kelas.listanggota', compact('lists', 'role', 'id'));
     }
     function store(Request $request) {
         $validatedData = $request->validate([

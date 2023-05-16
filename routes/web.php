@@ -60,6 +60,8 @@ Route::middleware('auth.check')->group(function () {
         });
         Route::get('/hapus/komentar/{id}', [KomentarMateriController::class, 'delete'])->name('komentar.materi.hapus');
         Route::get('/kick/{user_id}', [KelasController::class, 'kick'])->name('user.kick');
+        Route::post('/guru', [KelasController::class, 'guru'])->name('user.guru');
+        Route::post('/member', [KelasController::class, 'member'])->name('user.member');
     });
 });
 
