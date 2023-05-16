@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KelasController;
+use App\Http\Controllers\KomentarMateriController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MateriController;
 use App\Http\Controllers\RegisterController;
@@ -46,6 +47,8 @@ Route::middleware('auth.check')->group(function () {
         Route::get('/gabung', [KelasController::class, 'gabungView'])->name('kelas.gabung.index');
         Route::post('/gabung', [KelasController::class, 'gabungStore'])->name('kelas.gabung.store');
         Route::get('/{id}', [KelasController::class, 'show'])->name('kelas.show');
+        Route::get('/edit/{id}', [KelasController::class, 'edit'])->name('kelas.edit');
+        Route::put('/edit', [KelasController::class, 'update'])->name('kelas.update');
 
         Route::get('/anggota/{id}', [KelasController::class, 'listAnggota'])->name('kelas.list.anggota');
         Route::prefix('/materi')->group(function () {
@@ -55,6 +58,8 @@ Route::middleware('auth.check')->group(function () {
             Route::delete('/{id}', [MateriController::class, 'delete'])->name('materi.delete');
             Route::post('/komentar', [MateriController::class, 'komentarPost'])->name('komentar.post');
         });
+        Route::get('/hapus/komentar/{id}', [KomentarMateriController::class, 'delete'])->name('komentar.materi.hapus');
+        Route::get('/kick/{user_id}', [KelasController::class, 'kick'])->name('user.kick');
     });
 });
 

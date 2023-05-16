@@ -16,7 +16,8 @@ class KelasController extends Controller
     }
     function listAnggota($id) {
         $lists = UserRole::where('kelas_id', $id)->get();
-        return view('kelas.listanggota', compact('lists'));
+        $role = UserRole::where('kelas_id', $id)->where('user_id', Auth::user()->id)->first()->role;
+        return view('kelas.listanggota', compact('lists', 'role'));
     }
     function store(Request $request) {
         $validatedData = $request->validate([
@@ -29,7 +30,7 @@ class KelasController extends Controller
         $id = $model->id;
 
         UserRole::create(['kelas_id' => $id, 'user_id' => Auth::user()->id, 'role' => 'guru']);
-        return redirect()->route('home')->with('success', 'Berhasil membuat kelas');
+        return redirect()->route('kelas.show', ['id' => $id])->with('success', 'Berhasil membuat kelas');
     }
     function gabungView() {
         return view('kelas.gabungkelas');
@@ -63,5 +64,32 @@ class KelasController extends Controller
         $materis = Materi::where('kelas_id', $id)->get();
         // dd($kelas);
         return view('kelas.index', compact('info_kelas', 'role', 'materis'));
+    }
+    function edit($id) {
+        $role = UserRole::where('kelas_id', $id)->where('user_id', Auth::user()->id)->first();
+        if ($role == null) {
+            return redirect()->route('home');
+        }
+        if ($role->role == 'guru') {
+            $kelas = Kelas::find($id);
+            return view('kelas.edit', compact('kelas'));
+        } else {
+            return redirect()->route('home');
+        }
+    }
+    function update(Request $request) {
+        // dd($request->all());
+        $request->validate([
+            'id' => 'required',
+            'nama_kelas' => 'required',
+            'mata_pelajaran' => 'required'
+        ]);
+        Kelas::find($request->id)->update(['nama_kelas' => $request->nama_kelas, 'mata_pelajaran' => $request->mata_pelajaran]);
+        return redirect()->route('kelas.show', ['id' => $request->id]);
+    }
+
+    function kick($user_id) {
+        UserRole::where('user_id', $user_id)->delete();
+        return back()->with('success', 'Berhasil mengeluarkan user');
     }
 }

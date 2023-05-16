@@ -9,10 +9,23 @@
 <body>
   <h1>List anggota</h1>
   <hr>
+  @if ($role == 'guru')
   <ul>
     @foreach ($lists as $anggota)
-      <li>{{ $anggota->user->name }} | {{ $anggota->role }}</li>
+      @if ($anggota->user->id == Auth::user()->id)
+        <li>{{ $anggota->user->name }} | {{ $anggota->role }}</li>
+      @else  
+        <li>{{ $anggota->user->name }} | {{ $anggota->role }} | <a href="{{ route('user.kick', ['user_id' => $anggota->user->id]) }}">Kick</a></li>
+      @endif
     @endforeach
   </ul>
+  @else
+    <ul>
+      @foreach ($lists as $anggota)
+        <li>{{ $anggota->user->name }} | {{ $anggota->role }} </li>
+      @endforeach
+    </ul>
+  @endif
+  
 </body>
 </html>

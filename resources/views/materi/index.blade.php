@@ -27,11 +27,7 @@
     @foreach ($materiKomentar as $komentar)
       <li>{{ $komentar->user->name }} : {{ $komentar->komentar }}
         @if ($komentar->user_id == Auth::user()->id || $role == 'guru')
-        <form action="" method="post">
-          @csrf
-          @method('DELETE')
-          <button type="submit">Hapus</button>
-        </form>
+        <a href="{{ route('komentar.materi.hapus', ['id' => $komentar->id]) }}">Hapus</a>
         @endif
       </li>
     @endforeach

@@ -59,7 +59,7 @@ class MateriController extends Controller
         }
         $role = $kelas_id->role;
         $materiKomentar = MateriKomentar::where('materi_id', $id)->get();
-        return view('materi.index', compact('materi', 'materiKomentar', 'role'));
+        return view('materi.index', compact('materi', 'materiKomentar', 'role', 'kelas_id'));
     }
     function komentarPost(Request $request) {
         // dd($request->all());

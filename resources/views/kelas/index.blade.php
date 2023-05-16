@@ -7,7 +7,10 @@
   <title>Kelas</title>
 </head>
 <body>
-  <h1>Selamat datang di kelas : {{ $info_kelas->nama_kelas }}</h1>
+  <h1>Selamat datang di kelas : {{ $info_kelas->nama_kelas }} | {{ $info_kelas->kode_kelas }}</h1>
+  @if ($role->role == 'guru')
+    <a href="{{ route('kelas.edit', ['id' => $info_kelas->id]) }}">Edit</a>
+  @endif
   <h4>Role : {{ $role->role }}</h4>
 
   <a href="{{ route('kelas.list.anggota', ['id' => $info_kelas->id]) }}">List anggota</a>
