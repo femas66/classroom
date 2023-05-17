@@ -9,6 +9,11 @@
 <body>
   <h1>List anggota</h1>
   <hr>
+  <form method="POST" action="{{ route('kelas.keluar') }}">
+    @csrf
+    <input type="hidden" name="kelas_id" value="{{ $id }}">
+    <button type="submit" onclick="return confirm('Yakin mau keluar')">Keluar</button>
+  </form>
   @if ($role == 'guru')
   <ul>
     @foreach ($lists as $anggota)

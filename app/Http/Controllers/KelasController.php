@@ -12,7 +12,8 @@ use Illuminate\Support\Str;
 
 class KelasController extends Controller
 {
-    function delete($id) {
+    
+    public function delete($id) {
         $materi = Materi::where('kelas_id', $id);
         foreach ($materi->get() as $item) {
             File::delete(public_path('lampiran/' . $item->lampiran_materi));
@@ -22,6 +23,21 @@ class KelasController extends Controller
         Kelas::find($id)->delete();
         return redirect()->route('home')->with('success', 'Berhasil menghapus kelas');
 
+    }
+    function keluar(Request $request) {
+        $user_id = Auth::user()->id;
+        if (UserRole::where('kelas_id', $request->kelas_id)->count() == 1) {
+            $materi = Materi::where('kelas_id', $request->kelas_id);
+            foreach ($materi->get() as $item) {
+                File::delete(public_path('lampiran/' . $item->lampiran_materi));
+            }
+            $materi->delete();
+            UserRole::where('kelas_id', $request->kelas_id)->delete();
+            Kelas::find($request->kelas_id)->delete();
+            return redirect()->route('home')->with('success', 'Berhasil menghapus kelas');
+        }
+        UserRole::where('user_id', $user_id)->where('kelas_id', $request->kelas_id)->delete();
+        return redirect()->route('home')->with('success', 'Berhasil keluar kelas');
     }
     function gabungUrl($kode_kelas) {
         $cari = Kelas::where('kode_kelas', $kode_kelas);
