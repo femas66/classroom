@@ -7,10 +7,22 @@ use App\Models\Materi;
 use App\Models\UserRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
 class KelasController extends Controller
 {
+    function delete($id) {
+        $materi = Materi::where('kelas_id', $id);
+        foreach ($materi->get() as $item) {
+            File::delete(public_path('lampiran/' . $item->lampiran_materi));
+        }
+        $materi->delete();
+        UserRole::where('kelas_id', $id)->delete();
+        Kelas::find($id)->delete();
+        return redirect()->route('home')->with('success', 'Berhasil menghapus kelas');
+
+    }
     function gabungUrl($kode_kelas) {
         $cari = Kelas::where('kode_kelas', $kode_kelas);
         if ($cari->count() == 0) {

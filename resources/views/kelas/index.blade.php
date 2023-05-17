@@ -10,6 +10,11 @@
   <h1>Selamat datang di kelas : {{ $info_kelas->nama_kelas }} | {{ $info_kelas->kode_kelas }}</h1>
   @if ($role->role == 'guru')
     <a href="{{ route('kelas.edit', ['id' => $info_kelas->id]) }}">Edit</a>
+    <form action="{{ route('kelas.hapus', ['id' => $info_kelas->id]) }}" method="post">
+      @csrf
+      @method('DELETE')
+      <button type="submit">Hapus</button>
+    </form>
     <p>Link gabung : {{ $domain }}</p>
   @endif
   <h4>Role : {{ $role->role }}</h4>

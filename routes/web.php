@@ -50,6 +50,7 @@ Route::middleware('auth.check')->group(function () {
         Route::get('/{id}', [KelasController::class, 'show'])->name('kelas.show');
         Route::get('/edit/{id}', [KelasController::class, 'edit'])->name('kelas.edit');
         Route::put('/edit', [KelasController::class, 'update'])->name('kelas.update');
+        Route::delete('/hapus/{id}', [KelasController::class, 'delete'])->name('kelas.hapus');
 
         Route::get('/anggota/{id}', [KelasController::class, 'listAnggota'])->name('kelas.list.anggota');
         Route::prefix('/materi')->group(function () {
