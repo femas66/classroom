@@ -5,8 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Kelas</title>
+  <link rel="stylesheet" href="/css/bootstrap.css">
 </head>
 <body>
+  
   <h1>Selamat datang di kelas : {{ $info_kelas->nama_kelas }} | {{ $info_kelas->kode_kelas }}</h1>
   @if ($role->role == 'guru')
     <a href="{{ route('kelas.edit', ['id' => $info_kelas->id]) }}">Edit</a>
